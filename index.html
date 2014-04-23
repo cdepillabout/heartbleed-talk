@@ -40,7 +40,7 @@
 					<h1>HEARTBLEED</h1>
 					<img style="background: none; border: none;" src="images/heartbleed.png"></img>
 					<p>
-						<small>Created by <a href="http://hakim.se">Dennis</a> / <a href="http://twitter.com/cdepillabout">@cdepillabout</a></small>
+						<small>Created by <a href="https://github.com/cdepillabout">Dennis</a> / <a href="http://twitter.com/cdepillabout">@cdepillabout</a></small>
 					</p>
 
 					<aside class="notes">
@@ -63,6 +63,36 @@
 
 				<section>
 					<img class="stretch" src="images/heartbleed_explanation_3.png"></img>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section>
+					<h1>問題のコード</h1>
+					<pre style="font-size: 18px; margin-top: 40px; padding: 10px; background-color: #384048;">
+<span class="keyword">int</span> dtls1_process_heartbeat(SSL *s)
+{
+    <span class="keyword">unsigned</span> <span class="keyword">char</span> *p = &amp;s-&gt;s3-&gt;rrec.data[<span class="number">0</span>], *pl;
+    <span class="keyword">unsigned</span> <span class="keyword">short</span> hbtype;
+    <span class="keyword">unsigned</span> <span class="keyword">int</span> payload;
+
+    hbtype = *p++;
+    n2s(p, payload);
+    pl = p;
+    <span style="color: black">...</span>
+    buffer = OPENSSL_malloc(<span class="number">1</span> + <span class="number">2</span> + payload);
+    bp = buffer;
+
+    *bp++ = TLS1_HB_RESPONSE;
+    s2n(payload, bp);
+    memcpy(bp, pl, payload);
+    bp += payload;
+
+    r = dtls1_write_bytes(s, TLS1_RT_HEARTBEAT, buffer,
+            <span class="number">1</span> + <span class="number">2</span> + payload);
+    <span style="color: black">...</span>
+}</pre>
 
 					<aside class="notes">
 					</aside>
