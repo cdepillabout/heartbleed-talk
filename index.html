@@ -80,6 +80,7 @@
 				var typetext2 = raphael2.text(width_multiplier / 2, width_multiplier / 2, "request\ntype\n\n1 byte");
 				var paddingtext2 = raphael2.text(type_width + between_boxes + padding_width / 2, width_multiplier / 2, "heartbeat\nlength\n\n2 bytes");
 				var repeattext2 = raphael2.text(type_width + between_boxes * 2 + padding_width + repeat_width / 2, width_multiplier / 2, "heartbeat text...");
+				var eviltext2 = raphael2.text(type_width + between_boxes + padding_width / 2, width_multiplier + width_multiplier / 2, "↑\n65536");
 
 				recttype2.attr("fill", "#ccc").attr("stroke", "#fff");
 				rectpadding2.attr("fill", "#ccc").attr("stroke", "#fff");
@@ -88,6 +89,7 @@
 				typetext2.attr("fill", "#888").attr("font-size", 32).attr("font-weight", "bold");
 				paddingtext2.attr("fill", "#00f").attr("font-size", 32).attr("font-weight", "bold");
 				repeattext2.attr("fill", "#888").attr("font-size", 32).attr("font-weight", "bold");
+				eviltext2.attr("fill", "#f00").attr("font-size", 32).attr("font-weight", "bold");
 
 				/********************************************************************/
 				/**************** Third slide ***************************************/
@@ -111,7 +113,7 @@
 				var paddingtext3 = raphael3.text(type_width + between_boxes + padding_width / 2, width_multiplier / 2, "heartbeat\nlength\n\n2 bytes");
 				var repeattext3 = raphael3.text(type_width + between_boxes * 2 + padding_width + repeat_width / 2, width_multiplier / 2, "heartbeat text...");
 
-				var eviltext3 = raphael3.text(type_width + between_boxes + padding_width / 2, width_multiplier + width_multiplier / 2, "65536");
+				var eviltext3 = raphael3.text(type_width + between_boxes + padding_width / 2, width_multiplier + width_multiplier / 2, "↑\n65536");
 
 				recttype3.attr("fill", "#ccc").attr("stroke", "#fff");
 				rectpadding3.attr("fill", "#ccc").attr("stroke", "#fff");
@@ -223,7 +225,22 @@
     <span class="always-highlightcode">n2s(p, payload);</span>
     pl = p;</pre>
 
+					<p style="margin-top: 60px;" >リクエストの構成</p>
 					<div id="holder2"></div>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section>
+					<h1>大きすぎるmalloc</h1>
+					<pre style="font-size: 18px; margin-top: 40px; padding: 10px; background-color: #384048;">
+    buffer = OPENSSL_malloc(<span class="number">1</span> + <span class="number">2</span> + <span class="always-highlightcode">payload</span>);
+    bp = buffer;
+</pre>
+
+					<p style="margin-top: 60px;" >リクエストの構成</p>
+					<div id="holder3"></div>
 
 					<aside class="notes">
 					</aside>
