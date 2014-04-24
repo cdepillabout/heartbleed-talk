@@ -49,7 +49,7 @@
 
 				var typetext = raphael.text(width_multiplier / 2, width_multiplier / 2, "request\ntype\n\n1 byte");
 				var paddingtext = raphael.text(type_width + between_boxes + padding_width / 2, width_multiplier / 2, "heartbeat\nlength\n\n2 bytes");
-				var repeattext = raphael.text(type_width + between_boxes * 2 + padding_width + repeat_width / 2, width_multiplier / 2, "heartbeat text...");
+				var repeattext = raphael.text(type_width + between_boxes * 2 + padding_width + repeat_width / 2, width_multiplier / 2, "heartbeat text...\n4 bytes");
 
 				recttype.attr("fill", "#ccc").attr("stroke", "#fff");
 				rectpadding.attr("fill", "#ccc").attr("stroke", "#fff");
@@ -79,7 +79,7 @@
 
 				var typetext2 = raphael2.text(width_multiplier / 2, width_multiplier / 2, "request\ntype\n\n1 byte");
 				var paddingtext2 = raphael2.text(type_width + between_boxes + padding_width / 2, width_multiplier / 2, "heartbeat\nlength\n\n2 bytes");
-				var repeattext2 = raphael2.text(type_width + between_boxes * 2 + padding_width + repeat_width / 2, width_multiplier / 2, "heartbeat text...");
+				var repeattext2 = raphael2.text(type_width + between_boxes * 2 + padding_width + repeat_width / 2, width_multiplier / 2, "heartbeat text...\n4 bytes");
 				var eviltext2 = raphael2.text(type_width + between_boxes + padding_width / 2, width_multiplier + width_multiplier / 2, "↑\n65536");
 
 				recttype2.attr("fill", "#ccc").attr("stroke", "#fff");
@@ -111,7 +111,7 @@
 
 				var typetext3 = raphael3.text(width_multiplier / 2, width_multiplier / 2, "request\ntype\n\n1 byte");
 				var paddingtext3 = raphael3.text(type_width + between_boxes + padding_width / 2, width_multiplier / 2, "heartbeat\nlength\n\n2 bytes");
-				var repeattext3 = raphael3.text(type_width + between_boxes * 2 + padding_width + repeat_width / 2, width_multiplier / 2, "heartbeat text...");
+				var repeattext3 = raphael3.text(type_width + between_boxes * 2 + padding_width + repeat_width / 2, width_multiplier / 2, "heartbeat text...\n4 bytes");
 
 				var eviltext3 = raphael3.text(type_width + between_boxes + padding_width / 2, width_multiplier + width_multiplier / 2, "↑\n65536");
 
@@ -123,6 +123,39 @@
 				paddingtext3.attr("fill", "#00f").attr("font-size", 32).attr("font-weight", "bold");
 				eviltext3.attr("fill", "#f00").attr("font-size", 32).attr("font-weight", "bold");
 				repeattext3.attr("fill", "#888").attr("font-size", 32).attr("font-weight", "bold");
+
+				/********************************************************************/
+				/**************** Fourth slide **************************************/
+				/********************************************************************/
+				var raphael4 = Raphael("holder4");
+
+				width_multiplier = 140;
+				round_corners = 10;
+
+				between_boxes = 10;
+
+				type_width = 1 * width_multiplier;
+				padding_width = 2 * width_multiplier;
+				repeat_width = 4 * width_multiplier
+
+				var recttype4 = raphael4.rect(0, 0, type_width, width_multiplier, round_corners);
+				var rectpadding4 = raphael4.rect(type_width + between_boxes, 0, padding_width, width_multiplier, round_corners);
+				var rectrepeat4 = raphael4.rect(type_width + padding_width + between_boxes * 2, 0, repeat_width, width_multiplier, round_corners);
+
+				var typetext4 = raphael4.text(width_multiplier / 2, width_multiplier / 2, "request\ntype\n\n1 byte");
+				var paddingtext4 = raphael4.text(type_width + between_boxes + padding_width / 2, width_multiplier / 2, "heartbeat\nlength\n\n2 bytes");
+				var repeattext4 = raphael4.text(type_width + between_boxes * 2 + padding_width + repeat_width / 2, width_multiplier / 2, "heartbeat text...\n4 bytes");
+
+				var eviltext4 = raphael4.text(type_width + between_boxes + padding_width / 2, width_multiplier + width_multiplier / 2, "↑\n65536");
+
+				recttype4.attr("fill", "#ccc").attr("stroke", "#fff");
+				rectpadding4.attr("fill", "#ccc").attr("stroke", "#fff");
+				rectrepeat4.attr("fill", "#ccc").attr("stroke", "#fff");
+
+				typetext4.attr("fill", "#888").attr("font-size", 32).attr("font-weight", "bold");
+				paddingtext4.attr("fill", "#00f").attr("font-size", 32).attr("font-weight", "bold");
+				eviltext4.attr("fill", "#f00").attr("font-size", 32).attr("font-weight", "bold");
+				repeattext4.attr("fill", "#888").attr("font-size", 32).attr("font-weight", "bold");
 			}
 		</script>
 
@@ -200,7 +233,7 @@
 				</section>
 
 				<section>
-					<!-- <h1>問題のコード</h1> -->
+					<h2>リクエストってどうなっている？</h1>
 					<pre style="font-size: 18px; margin-top: 40px; padding: 10px; background-color: #384048;">
 <span class="keyword">int</span> dtls1_process_heartbeat(SSL *s)
 {
@@ -213,6 +246,9 @@
 					<div id="holder"></div>
 
 					<aside class="notes">
+						<ul>
+							<li>リクエストがヒープ領域で作られている</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -241,6 +277,28 @@
 
 					<p style="margin-top: 60px;" >リクエストの構成</p>
 					<div id="holder3"></div>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section>
+					<h1>memcpyあるある</h1>
+					<pre style="font-size: 18px; margin-top: 40px; padding: 10px; background-color: #384048;">
+    <span class="keyword">unsigned</span> <span class="keyword">char</span> *p = &amp;s-&gt;s3-&gt;rrec.data[<span class="number">0</span>], *pl;
+    <span style="color: black">...</span>
+    hbtype = *p++;
+    n2s(p, payload);
+    pl = p;
+    <span style="color: black">...</span>
+    *bp++ = TLS1_HB_RESPONSE;
+    s2n(payload, bp);
+    <span class="always-highlightcode">memcpy(bp, pl, payload);</span>
+    bp += payload;
+</pre>
+
+					<p style="margin-top: 60px;" >リクエストの構成</p>
+					<div id="holder4"></div>
 
 					<aside class="notes">
 					</aside>
