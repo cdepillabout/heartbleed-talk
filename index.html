@@ -292,6 +292,8 @@
 					<aside class="notes">
 						<ul>
 							<li>リクエストがヒープ領域で作られている</li>
+							<li>サイズのところに、リクエストサイズを書きます</li>
+							<li>通常だと、サイズが小さい</li>
 						</ul>
 					</aside>
 				</section>
@@ -309,6 +311,10 @@
 					<div id="holder2"></div>
 
 					<aside class="notes">
+						<ul>
+							<li>チェックしないでユーザーが指定したサイズを信じてしまいます</li>
+							<li>悪いユーザーだと、小さいリクエスト送ってきたのに嘘ついてサイズをとても大きく指定します</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -323,6 +329,10 @@
 					<div id="holder3"></div>
 
 					<aside class="notes">
+						<ul>
+							<li>(draw on board)</li>
+							<li>heap領域でレスポンスのメモリを確保</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -345,6 +355,12 @@
 					<div id="holder4"></div>
 
 					<aside class="notes">
+						<ul>
+							<li>(draw on board)</li>
+							<li>本当のリクエストのサイズが小さいのにそれを超えてメモリをコピーしてユーザーに返却します</li>
+							<li>ユーザーは、超えた分のメモリが読めます</li>
+							<li>サーバの秘密鍵を読めることもあります</li>
+						</ul>
 					</aside>
 				</section>
 
