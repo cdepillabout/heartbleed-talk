@@ -59,6 +59,29 @@
 				paddingtext.attr("fill", "#000").attr("font-size", "32").attr("font-weight", "bold");
 				repeattext.attr("fill", "#000").attr("font-size", "32").attr("font-weight", "bold");
 
+				var already_run = false;
+				var add_thing = function () {
+					if (already_run) return;
+
+					var goodtext = raphael.text(type_width + between_boxes + padding_width / 2, width_multiplier + width_multiplier / 2, "↑\n4");
+					goodtext.attr("fill", "#0a0").attr("font-size", 32).attr("font-weight", "bold");
+
+					var circle = raphael.circle(type_width + between_boxes + padding_width / 2, width_multiplier + width_multiplier / 2 + width_multiplier / 6, 20);
+					circle.attr("stroke", "#fff").attr("stroke-width", 5);
+
+					var path = raphael.path("M" + (type_width + between_boxes + padding_width / 2 + 20) + " " +
+																				(width_multiplier + width_multiplier / 2 + width_multiplier / 6) +
+																	"L" + (type_width + between_boxes * 2 + padding_width + repeat_width / 2 - 60) + " " +
+																				(width_multiplier / 2 + 20));
+					path.attr("stroke", "#fff").attr("stroke-width", 5);
+
+					already_run = true;
+				}
+
+				rectpadding.click(add_thing);
+				paddingtext.click(add_thing);
+
+
 				/********************************************************************/
 				/*************** Second slide ***************************************/
 				/********************************************************************/
@@ -178,6 +201,11 @@
 					</p>
 
 					<aside class="notes">
+						<ul>
+							<li>今月話題になったHeartBleedの説明をしたいと思います</li>
+							<li>もともとセキュリティに興味があって</li>
+							<li>最初の仕事がLinuxのセキュリティに関係している仕事でした</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -185,6 +213,10 @@
 					<img class="stretch" src="images/heartbleed_explanation_1.png"></img>
 
 					<aside class="notes">
+						<ul>
+							<li>HeartBleedを簡単に説明しているネットコミックがあって共有したいと思います。</li>
+							<li>(read the comic...)</li>
+						</ul>
 					</aside>
 				</section>
 
@@ -199,11 +231,15 @@
 					<img class="stretch" src="images/heartbleed_explanation_3.png"></img>
 
 					<aside class="notes">
+						<ul>
+							<li>リクエストのサイズについて嘘を言っています。</li>
+							<li>結果としては、クライアントはメモリ上の任意のデータを読み取れるんです。</li>
+						</ul>
 					</aside>
 				</section>
 
 				<section>
-					<h1>問題のコード</h1>
+					<h2>問題のコード</h2>
 					<pre style="font-size: 18px; margin-top: 40px; padding: 10px; background-color: #384048;">
 <span class="keyword">int</span> dtls1_process_heartbeat(SSL *s)
 {
@@ -229,11 +265,19 @@
 }</pre>
 
 					<aside class="notes">
+						<ul>
+							<li>C言語がわからない人？</li>
+							<li>(explain C's memory layout: stack and heap)</li>
+							<li>これはクライアントからのリクエスト</li>
+							<li>クライアントが渡しているリクエストのサイズをチェックしないで信じて使っちゃうところです</li>
+							<li>レスポンスのメモリを確保しているところです</li>
+							<li>任意のメモリをユーザに渡している</li>
+						</ul>
 					</aside>
 				</section>
 
 				<section>
-					<h2>リクエストってどうなっている？</h1>
+					<h2>リクエストってどうなっている？</h2>
 					<pre style="font-size: 18px; margin-top: 40px; padding: 10px; background-color: #384048;">
 <span class="keyword">int</span> dtls1_process_heartbeat(SSL *s)
 {
@@ -253,7 +297,7 @@
 				</section>
 
 				<section>
-					<h1>チェック無し</h1>
+					<h2>チェック無し</h2>
 					<pre style="font-size: 18px; margin-top: 40px; padding: 10px; background-color: #384048;">
     <span class="keyword">unsigned</span> <span class="keyword">int</span> payload;
 
@@ -269,7 +313,7 @@
 				</section>
 
 				<section>
-					<h1>大きすぎるmalloc</h1>
+					<h2>大きすぎるmalloc</h2>
 					<pre style="font-size: 18px; margin-top: 40px; padding: 10px; background-color: #384048;">
     buffer = OPENSSL_malloc(<span class="number">1</span> + <span class="number">2</span> + <span class="always-highlightcode">payload</span>);
     bp = buffer;
@@ -283,7 +327,7 @@
 				</section>
 
 				<section>
-					<h1>memcpyあるある</h1>
+					<h2>memcpyあるある</h2>
 					<pre style="font-size: 18px; margin-top: 40px; padding: 10px; background-color: #384048;">
     <span class="keyword">unsigned</span> <span class="keyword">char</span> *p = &amp;s-&gt;s3-&gt;rrec.data[<span class="number">0</span>], *pl;
     <span style="color: black">...</span>
@@ -299,6 +343,17 @@
 
 					<p style="margin-top: 60px;" >リクエストの構成</p>
 					<div id="holder4"></div>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section>
+					<h1>Cが怖い</h1>
+					<img style="background: none; border: none;" src="images/heartbleed.png"></img>
+					<p>
+						<small>fin.</small>
+					</p>
 
 					<aside class="notes">
 					</aside>
